@@ -1,0 +1,28 @@
+version: '3'
+services: 
+    db: 
+        image: mysql:5.7
+        container_name: ${PROJECT_NAME}_mysql
+        restart: unless-stopped
+        env_file: .env
+        environment: 
+            - MYSQL_DATABASE=${DB_NAME}
+        volumes: 
+            - ./datas:/var/lib/mysql
+        ports: 
+            - 3306:3306
+    webserver: 
+        image: webdevops/php-apache:7.3
+        container_name: ${PROJECT_NAME}_webserver
+        volumes: 
+            - ./htdocs/todolist:/var/www/vhosts/todolist.com/htdocs
+            - ./etc/apache2/sites-enabled:/etc/apache2/sites-enabled
+            - ./logs:/var/log/apache2
+        depends_on: 
+            - db
+        expose: 
+            - 80
+        ports: 
+            - 80:80
+volumes: 
+    datas: 

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TaskController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Liste des tâches</h1>
+
+    <ul>
+    	{% for task in tasks %}
+    		<li><a href="{{ path("one_task", {"id": loop.index0}) }}">{{ task.getTitle() }}</a>  - {{ task.createdAt | date("d-m-Y") }}</li>
+    	{% endfor %}
+    </ul>
+</div>
+{% endblock %}

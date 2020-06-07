@@ -1,0 +1,11 @@
+# Environment variables
+.env
+
+# Symfony project
+htdocs/todolist/vendor
+htdocs/todolist/.env
+
+# Docker
+logs
+datas
+
