@@ -15,27 +15,14 @@ class TaskController extends AbstractController
      */
     private $tasks;
     
-    public function __construct() {
-        $task = new Task();
-        $task
-            ->setTitle("Tâche 1")
-            ->setSummary("Un test pour la tâche n° 1")
-            ->setCreatedAt(new \DateTime())
-            ->setPriority(3);
-        $this->tasks[] = $task;
-        
-        $otherTask = clone $task;
-        $otherTask
-            ->setTitle("Tâche 2")
-            ->setSummary("Test pour la tâche 2");
-        $this->tasks[] = $otherTask;
-    }
+    public function __construct() {}
     
     /**
      * @Route("/task", name="task")
      */
     public function index(): Response
     {
+        $this->tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
         return $this->render('task/index.html.twig', [
             "tasks" => $this->tasks,
         ]);
@@ -48,8 +35,49 @@ class TaskController extends AbstractController
      * @return Response
      */
     public function aTask($id): Response {
+        $repository = $this->getDoctrine()->getRepository(Task::class);
         return $this->render('task/task.html.twig', [
-            "task" => $this->tasks[$id]
+            "task" => $repository->find($id)
         ]);
+    }
+    
+    /**
+     * @Route("/setup", name="task_setup")
+     * 
+     * @return Response
+     */
+    public function fixture(): Response {
+       $this->setTasks();
+        
+       return new Response(
+           "2 rows were added to Task entity",
+           Response::HTTP_OK,
+           [
+               "content-type" => "text/plain"
+           ]
+       );
+    }
+    
+    private function setTasks() {
+        $task = new Task(); // Première tâche
+        $task
+            ->setTitle("Tâche 1")
+            ->setSummary("Un test pour la tâche n° 1")
+            ->setCreatedAt(new \DateTime())
+            ->setPriority(3);
+        // Tell Doctrine to persist the new Entity
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($task);
+        
+        $task = new Task(); // Deuxième tâche
+        $task
+            ->setTitle("Tâche 2")
+            ->setSummary("La tâche n° 2")
+            ->setCreatedAt(new \DateTime())
+            ->setPriority(1);
+        $entityManager->persist($task);
+        
+        // On peut envoyer la transaction entière : 2 insertions
+        $entityManager->flush(); // Write really datas for the current transaction
     }
 }

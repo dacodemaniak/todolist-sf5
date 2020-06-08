@@ -9,7 +9,11 @@
 
     <ul>
     	{% for task in tasks %}
-    		<li><a href="{{ path("one_task", {"id": loop.index0}) }}">{{ task.getTitle() }}</a>  - {{ task.createdAt | date("d-m-Y") }}</li>
+    		<li><a 
+    			href="{{ path("one_task", {"id": task.getId()}) }}">
+    			    {{ task.getTitle() }}
+    			</a>  - {{ task.createdAt | date("d-m-Y") }}
+    		</li>
     	{% endfor %}
     </ul>
 </div>

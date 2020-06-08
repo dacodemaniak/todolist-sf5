@@ -28,20 +28,24 @@ class Task
     private $summary;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="is_enabled", type="boolean")
      */
-    private $is_enabled;
+    private $isEnabled;
 
     /**
      * @ORM\Column(type="smallint")
      */
     private $priority;
 
+    public function __construct() {
+        $this->isEnabled = true;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -85,12 +89,12 @@ class Task
 
     public function getIsEnabled(): ?bool
     {
-        return $this->is_enabled;
+        return $this->isEnabled;
     }
 
-    public function setIsEnabled(bool $is_enabled): self
+    public function setIsEnabled(bool $isEnabled): self
     {
-        $this->is_enabled = $is_enabled;
+        $this->isEnabled = $isEnabled;
 
         return $this;
     }
