@@ -71,22 +71,21 @@ class CategoryController extends AbstractController
         
         $message = "";
         
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // Je dois procéder à la persistence de la donnée
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($category);
-                $entityManager->flush();
+        if ($form->isValid()) {
+           // Je dois procéder à la persistence de la donnée
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($category);
+           $entityManager->flush();
                 
-                $id = $category->getId();
+           $id = $category->getId();
                 
-                $message = "La catégorie : " . $id . " a bien été ajoutée.";
-            } else {
+            $message = "La catégorie : " . $id . " a bien été ajoutée.";
+         } else {
                 // One or more assertions was not satisfied
-                $message = "Une erreur est survenue lors de la création de la catégorie.";
+          $message = "Une erreur est survenue lors de la création de la catégorie.";
                 
-            }
         }
+
         
         return $this->displayAddCategoryForm($message);
     }
@@ -142,5 +141,16 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/delete/{id}", name="delete_category", methods={"GET","HEAD"}, requirements={"id"="\d+"})
      */
-    public function deleteCategory() {}
+    public function deleteCategory(int $id) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository = $entityManager()->getRepository(Category::class);
+        
+        $category = $repository->find($id);
+        
+        if ($category) {
+            $entityManager->remove($category);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute("list_categories");
+    }
 }
