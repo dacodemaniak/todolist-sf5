@@ -29,7 +29,7 @@ class CategoryController extends AbstractController
      * 
      * Display CategoryFormType
      */
-    public function displayAddCategoryForm(): Response {
+    public function displayAddCategoryForm(string $message = ""): Response {
         
         
         // Créer le formulaire à partir de CategoryFormType
@@ -40,7 +40,8 @@ class CategoryController extends AbstractController
             "category/category-form.html.twig",
             [
                 "formTitle" => "Ajouter une catégorie",
-                "formCategory" => $form->createView()
+                "formCategory" => $form->createView(),
+                "message" => $message
             ]
         );
     }
@@ -65,18 +66,10 @@ class CategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
+            
+            $id = $category->getId();
         }
         
-        // Think to empty the entity before rendering
-        $category = new Category();
-        
-        // Retourner une réponse vers le navigateur avec le rendu du formulaire
-        return $this->render(
-            "category/category-form.html.twig",
-            [
-                "formTitle" => "Ajouter une catégorie",
-                "formCategory" => $form->createView()
-            ]
-        );
+        return $this->displayAddCategoryForm("La catégorie : " . $id . " a bien été ajoutée.");
     }
 }
