@@ -42,7 +42,7 @@ class TaskController extends AbstractController
     }
     
     /**
-     * @Route("/setup", name="task_setup")
+     * @Route("/task/setup", name="task_setup")
      * 
      * @return Response
      */
