@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Task;
 
@@ -18,13 +19,73 @@ class TaskController extends AbstractController
     public function __construct() {}
     
     /**
-     * @Route("/task", name="task")
+     * @Route("/task", methods={"GET", "HEAD"}, name="task")
      */
     public function index(): Response
     {
         $this->tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
         return $this->render('task/index.html.twig', [
             "tasks" => $this->tasks,
+        ]);
+    }
+
+    /**
+     * @Route("/task", methods={"POST", "HEAD"}, name="add_task")
+     */
+    public function addTask(Request $request): Response {
+        // Get the body content
+        $jsonData = json_decode($request->getContent());
+        
+        $newTask = new Task();
+        $newTask
+            ->setTitle($jsonData->title)
+            ->setSummary($jsonData->summary)
+            ->setCreatedAt(\DateTime::createFromFormat("Y-m-d", $jsonData->createdAt))
+            ->setIsEnabled($jsonData->isEnabled)
+            ->setPriority($jsonData->priority);
+        // Get the entity Manager
+        $entityManager = $this->getDoctrine()->getManager();
+        
+        // Persist the new task
+        $entityManager->persist($newTask);
+        
+        // Flush datas
+        $entityManager->flush();
+        
+        return $this->render('task/index.html.twig', [
+            "tasks" => $this->getDoctrine()->getRepository(Task::class)->findAll(),
+        ]);
+    }
+    
+    /**
+     * @Route("/task", methods={"PUT", "HEAD"}, name="update_task")
+     * 
+     * @param Request $request
+     * @return Response
+     */
+    public function updateTask(Request $request): Response {
+        // Get the id of the task to update
+        $id = $request->query->get("id");
+        
+        // Get the task to update from his id
+        $repository = $this->getDoctrine()->getRepository(Task::class);
+        $task = $repository->find($id);
+        
+        // Get the request payload (body)
+        $jsonData = json_decode($request->getContent());
+        
+        // Update the task content
+        $task
+            ->setTitle($jsonData->title)
+            ->setSummary($jsonData->summary)
+            ->setPriority($jsonData->priority);
+        
+        // Persist and flush updated datas
+        $this->getDoctrine()->getManager()->persist($task);
+        $this->getDoctrine()->getManager()->flush();
+        
+        return $this->render('task/index.html.twig', [
+            "tasks" => $this->getDoctrine()->getRepository(Task::class)->findAll(),
         ]);
     }
     
