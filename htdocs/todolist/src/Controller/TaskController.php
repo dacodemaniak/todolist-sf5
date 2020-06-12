@@ -90,7 +90,7 @@ class TaskController extends AbstractController
     }
     
     /**
-     * @Route("/task/{id}", name="one_task", requirements={"id"="\d+"})
+     * @Route("/task/{id}", name="one_task", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
      * 
      * @param int $id
      * @return Response
@@ -100,6 +100,40 @@ class TaskController extends AbstractController
         return $this->render('task/task.html.twig', [
             "task" => $repository->find($id)
         ]);
+    }
+    
+    /**
+     * @Route("/task/{id}", name="delete_task", methods={"DELETE", "HEAD"}, requirements={"id"="\d+"})
+     *  
+     * @param int $id
+     * @return Response
+     */
+    public function deleteTask(int $id): Response {
+        $repository = $this->getDoctrine()->getRepository(Task::class);
+        
+        $task = $repository->find($id); // Récupère la tâche souhaitée
+        
+        if ($task) {
+            $this->getDoctrine()->getManager()->remove($task);
+            
+            $this->getDoctrine()->getManager()->flush();
+            
+            return new Response(
+                "Task " . $id . " supprimée",
+                Response::HTTP_OK,
+                [
+                    "content-type" => "application/json"
+                ]
+            );
+        }
+        
+        return new Response(
+            "Task " . $id . " non trouvé",
+            Response::HTTP_NOT_FOUND,
+            [
+                "content-type" => "application/json"
+            ]
+        );
     }
     
     /**
