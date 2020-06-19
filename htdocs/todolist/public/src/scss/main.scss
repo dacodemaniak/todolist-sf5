@@ -1,0 +1,10 @@
+/**
+* Main styles for the application
+**/
+
+// Import materialize styles
+@import "~materialize-css/sass/materialize.scss";
+
+// Imports all other scss files
+@import "./variables.scss";
+@import "./modal.scss";

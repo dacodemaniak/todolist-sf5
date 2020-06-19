@@ -23,7 +23,7 @@
 						<a href="{{ path("update_category", {"id": category.getId()}) }}" title="Mettre à jour" role="button">
 							Update
 						</a>
-						<a href="{{ path("delete_category", {"id": category.getId()}) }}" title="Supprimer" role="button">
+						<a href="#" deleteCategory="{{ category.getId() }}" title="Supprimer" role="button">
 							Delete
 						</a>
 					</td>

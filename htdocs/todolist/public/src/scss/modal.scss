@@ -1,0 +1,23 @@
+/**
+* modal.scss
+*   Styling modal boxes
+**/
+.modal-outer-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $modal-background-color;
+
+    .modal-inner-box {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto; // Horizontal centered
+        // Centrage vertical
+        top: 50%; // Slide top corner at the middle...
+        transform: translateY(-50%);
+        background-color: $modal-inner-background-color;
+    }
+}

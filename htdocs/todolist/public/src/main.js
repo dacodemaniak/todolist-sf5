@@ -8,9 +8,16 @@
 // Import some libraries
 import $ from 'jquery'
 
+// Imports styles
+import './scss/main.scss'
+import { DeleteCategoryHandler } from './category-module/delete-category-handler'
+
 class Main {
     constructor() {
         console.log(`Frontend app works!`)
+
+        // Make an instance of the handler for the table
+        new DeleteCategoryHandler()
     }
 }
 

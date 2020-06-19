@@ -3,6 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        
+        <!-- Frontend app integration -->
+        <script src="{{ asset('dist/main.js') }}"></script>
+        
+        <!-- Styles -->
+        <link rel="stylesheet" href="{{ asset('dist/assets/css/main.css') }}">
+        
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
