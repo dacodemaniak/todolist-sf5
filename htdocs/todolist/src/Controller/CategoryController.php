@@ -139,7 +139,7 @@ class CategoryController extends AbstractController
     }
     
     /**
-     * @Route("/category/delete/{id}", name="delete_category", methods={"GET","HEAD"}, requirements={"id"="\d+"})
+     * @Route("/category/delete/{id}", name="delete_category", methods={"DELETE","HEAD"}, requirements={"id"="\d+"})
      */
     public function deleteCategory(int $id) {
         $entityManager = $this->getDoctrine()->getManager();
