@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use \App\Entity\Category;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -42,6 +43,11 @@ class Task
      */
     private $priority;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class)
+     */
+    private $category;
+    
     public function __construct() {
         $this->isEnabled = true;
     }
@@ -108,6 +114,16 @@ class Task
     {
         $this->priority = $priority;
 
+        return $this;
+    }
+    
+    public function getCategory(): Category {
+        return $this->category;
+    }
+    
+    public function setCategory(Category $category): self {
+        $this->category = $category;
+        
         return $this;
     }
 }
