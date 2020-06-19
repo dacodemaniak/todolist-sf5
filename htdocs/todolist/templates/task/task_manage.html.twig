@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<div class="row">
+    	<h2 class="col s12">{{ formTitle }}</h2>
+    	
+    	{{ form_start(formTask) }}
+    		<div class="row">
+    			<div class="input-field col s12">
+    				{{ form_widget(formTask.title) }}
+    				<label>Titre</label>
+    			</div>
+    		</div>
+    		
+    		<div class="row">
+    			<div class="input-field col s12">
+    				{{ form_widget(formTask.summary) }}
+    				<label>Détail</label>
+    			</div>
+    		</div>
+    		
+    		<div class="row">
+    			<div class="input-field col s6">
+    				{{ form_widget(formTask.priority) }}
+    				<label>Priorité</label>
+    			</div>
+    			<div class="switch col s6">
+    				<label>
+    					Non
+    				    {{ form_widget(formTask.isEnabled) }}
+    				    <span class="lever"></span>
+    				    Oui
+    				</label>
+    			</div>
+    		</div>
+    	    
+    	    <div class="row">
+    	    	<div class="col s12 input-field">
+    	    		{{ form_widget(formTask.category) }}
+    	    		<label>Catégorie</label>
+    	    	</div>
+    	    </div>
+    	    <div class="row">
+    	    	<div class="col s12">
+    	    		<button type="submit" name="submit" class="btn btn-default">{{ buttonTitle }}</button>
+    	    	</div>
+    	    </div>
+    		
+    	{{ form_end(formTask) }}
+    	
+    	{% if message != "" %}
+    		<div class="alert alert-success">
+    			{{ message }}
+    		</div>
+    	{% endif %}
+	</div>
+{% endblock %}

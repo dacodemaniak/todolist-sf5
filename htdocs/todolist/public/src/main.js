@@ -7,6 +7,7 @@
 
 // Import some libraries
 import $ from 'jquery'
+import * as M from 'materialize-css'
 
 // Imports styles
 import './scss/main.scss'
@@ -24,6 +25,13 @@ class Main {
 // Bootstraping
 $(document).ready(
     () => {
+        // Materialize specific
         new Main()
     }
 )
+
+document.addEventListener('DOMContentLoaded', () => {
+    var elems = document.querySelectorAll('select')
+    const options = null
+    var instances = M.FormSelect.init(elems, options)
+  });
