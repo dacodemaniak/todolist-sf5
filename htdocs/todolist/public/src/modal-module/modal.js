@@ -75,6 +75,9 @@ export class Modal {
         )
     }
 
+    /**
+     * Yes handler doSomething
+     */
     yesButtonHandler() {
         $('body').on(
             'click',
@@ -82,6 +85,9 @@ export class Modal {
             (event) => {
                 console.log(`Have to remove the Modal box : yes mode`)
                 this.remove()
+
+                // Trigger an event to tell what to do
+                $('body [deleteCategory]').trigger('doDelete')
             }
         )
     }

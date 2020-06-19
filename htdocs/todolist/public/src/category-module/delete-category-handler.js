@@ -36,6 +36,29 @@ import { Modal } from '../modal-module/modal'
                 // Show a modal box
                 const modal = new Modal(content)
                 modal.show()
+
+                // Listen for a doDelete event
+                button.on(
+                    'doDelete',
+                    (event) => {
+                        console.log(`Hey guys, i have to delete a row`)
+                        // Send a request to the backend to remove the category with a specific ID
+                        $.ajax({
+                            url: 'http://127.0.0.1/category/delete/' + trPlaceholder.children('td').eq(1).html().toString(),
+                            method: 'delete',
+                            dataType: 'json', // Expected response mime type
+                            success: (response) => {
+                                // My logic if server respond with a 200 OK
+                                // Remove the html table row associated to this ID
+                                trPlaceholder.remove()
+                            },
+                            error: (XHR, response, status) => {
+                                // What about failure
+                            }        
+                        })
+
+                    }
+                )
             }
         ) // Place an event handler on all elements of the collection
     }
