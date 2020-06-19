@@ -25,5 +25,8 @@
   "dependencies": {
     "jquery": "^3.5.1",
     "materialize-css": "^1.0.0"
+  },
+  "engines": {
+    "yarn": "YARN NO LONGER USED - use npm instead."
   }
 }
