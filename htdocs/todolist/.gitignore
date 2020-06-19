@@ -9,3 +9,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 /.buildpath
+
+### Frontend exclusions
+public/node_modules
+public/dist
