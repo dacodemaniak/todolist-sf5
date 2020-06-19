@@ -141,16 +141,37 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/delete/{id}", name="delete_category", methods={"DELETE","HEAD"}, requirements={"id"="\d+"})
      */
-    public function deleteCategory(int $id) {
+    public function deleteCategory(int $id): Response {
         $entityManager = $this->getDoctrine()->getManager();
-        $repository = $entityManager()->getRepository(Category::class);
+        $repository = $entityManager->getRepository(Category::class);
         
         $category = $repository->find($id);
         
         if ($category) {
             $entityManager->remove($category);
             $entityManager->flush();
+            // Send the response to the client
+            return new Response(
+                json_encode([
+                    "message" => "Category " . $id . " was deleted!",
+                    "status" => 200
+                ]),
+                Response::HTTP_OK, // Static property of Response class
+                [
+                    "Content-Type" => "application/json"
+                ]
+            );
+        } else {
+            return new Response(
+                json_encode([
+                        "message" => "Category " . $id . " was not found!",
+                        "status" => 404
+                    ]),
+                    Response::HTTP_NOT_FOUND, // Static property of Response class
+                    [
+                        "Content-Type" => "application/json"
+                    ]
+                );
         }
-        return $this->redirectToRoute("list_categories");
     }
 }
