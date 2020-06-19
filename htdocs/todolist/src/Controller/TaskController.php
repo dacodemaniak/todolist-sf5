@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Category;
 use App\Entity\Task;
+use App\Form\TaskFormType;
 
 class TaskController extends AbstractController
 {
@@ -30,7 +32,53 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/task", methods={"POST", "HEAD"}, name="add_task")
+     * @Route("/task/add", methods={"GET", "HEAD"}, name="add_task")
+     * 
+     * @return Response
+     */
+    public function displayAddTaskForm(): Response {
+        // Create an instance of TaskFormType
+        $form = $this->createForm(TaskFormType::class);
+        
+        // Create and return the response
+        return $this->render(
+            "task/task_manage.html.twig",
+            [
+                "formTitle" => "Ajouter une tâche",
+                "buttonTitle" => "Créer",
+                "message" => "",
+                "formTask" => $form->createView()
+            ]
+        );
+    }
+    
+    /**
+     * @Route("/task/add", methods={"POST", "HEAD"}), name="process_add_task")
+     * 
+     * @param Request $request
+     * @return Response
+     */
+    public function processAddTaskForm(Request $request): Response {
+        $task = new Task();
+        
+        
+        // Build form and hydrate from form
+        $form = $this->createForm(TaskFormType::class, $task);
+        $form->handleRequest($request);
+        
+        // Think i have a well formed Task
+        if ($form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            // Make the task persist
+            $entityManager->persist($task);
+            $entityManager->flush();
+        }
+        return $this->displayAddTaskForm();
+    }
+    
+    /**
+     * @Route("/task", methods={"POST", "HEAD"}, name="old_add_task")
      */
     public function addTask(Request $request): Response {
         // Get the body content

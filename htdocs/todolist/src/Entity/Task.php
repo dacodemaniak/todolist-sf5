@@ -50,6 +50,7 @@ class Task
     
     public function __construct() {
         $this->isEnabled = true;
+        $this->createdAt = new \DateTime();
     }
     
     public function getId(): ?int
@@ -117,7 +118,7 @@ class Task
         return $this;
     }
     
-    public function getCategory(): Category {
+    public function getCategory(): ?Category {
         return $this->category;
     }
     
